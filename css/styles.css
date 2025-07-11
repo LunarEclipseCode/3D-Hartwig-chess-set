@@ -873,7 +873,7 @@ body:not(.animated) *:not(#panes) {
 h1 {
   margin-bottom: 0.5em;
   font-size: 1.75em;
-  font-weight: 900;
+  font-weight: 600;
   text-transform: uppercase;
 }
 
@@ -881,7 +881,7 @@ h2 {
   margin-top: 0.75em;
   margin-bottom: 0.5em;
   font-size: 1em;
-  font-weight: 900;
+  font-weight: 600;
   text-transform: uppercase;
 }
 
@@ -2177,7 +2177,7 @@ input[type="checkbox"]:hover + label:after {
   margin-top: 0.25em;
   margin-bottom: 1em;
   font-size: 1.2em;
-  font-weight: 900;
+  font-weight: 600;
   text-transform: uppercase;
 }
 

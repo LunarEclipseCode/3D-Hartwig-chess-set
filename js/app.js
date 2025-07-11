@@ -716,12 +716,15 @@ function setTheme(event) {
   var theme = this.dataset.theme;
   document.getElementById("app").dataset.theme = theme;
 
-  if (theme === "classic" || theme === "marble") {
-    white = "White";
-    black = "Black";
-  } else {
+  if (theme === "flat") {
     white = "Blue";
     black = "Red";
+  } else if (theme === "wireframe") {
+    white = "Blue";
+    black = "Yellow";
+  } else {
+    white = "White";
+    black = "Black";
   }
   updatePlayerSideLabel();
 }
