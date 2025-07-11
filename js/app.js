@@ -1,8 +1,10 @@
 /*
- * 3D Artwig chess set
- * @JulianGarnier
+ * 3D Hartwig Chess Set
+ * Original design and code by @JulianGarnier
+ * Improved by @LunarEclipseCode
  *
- * Licensed under the MIT license.
+ * Originally released under the MIT license.
+ * This version is provided under GPL (due to stockfish)
  * Copyright 2012 Julian Garnier
  */
 
@@ -24,6 +26,7 @@ var closestElement = null;
 var white = "White";
 var black = "Black";
 var board = {};
+var captureHistory = { w: [], b: [] };
 var autoRotate = true;
 var gameStarted = false;
 var playerSide = "w";
@@ -161,10 +164,6 @@ function makeBotMove(move) {
 
   // Handle captures
   var capturedPiece = chess.get(to);
-  if (capturedPiece) {
-    var jailId = capturedPiece.color === "w" ? "w-jail" : "b-jail";
-    createPiece(capturedPiece.color, capturedPiece.type, jailId);
-  }
 
   // Calculate movement offset
   var fromRect = fromSquare.getBoundingClientRect();
@@ -190,6 +189,12 @@ function makeBotMove(move) {
 
     // Make the actual chess move
     chess.move({ from: from, to: to, promotion: promotion });
+
+    if (capturedPiece) {
+      var jailId = capturedPiece.color === "w" ? "w-jail" : "b-jail";
+      createPiece(capturedPiece.color, capturedPiece.type, jailId);
+      captureHistory[capturedPiece.color].push(capturedPiece.type);
+    }
     waitingForBotMove = false;
     updateBoard();
   }, 500);
@@ -281,6 +286,7 @@ function dropPiece(event) {
         var capturedPiece = chess.get(squareEndPos);
         var jailId = capturedPiece.color === "w" ? "w-jail" : "b-jail";
         createPiece(capturedPiece.color, capturedPiece.type, jailId);
+        captureHistory[capturedPiece.color].push(capturedPiece.type);
       }
 
       hideMoves(grabbedID);
@@ -449,32 +455,10 @@ function updateCaptured() {
   document.getElementById("w-jail").innerHTML = "";
   document.getElementById("b-jail").innerHTML = "";
 
-  var startingPieces = {
-    w: { p: 8, r: 2, n: 2, b: 2, q: 1, k: 1 },
-    b: { p: 8, r: 2, n: 2, b: 2, q: 1, k: 1 },
-  };
-
-  var currentPieces = {
-    w: { p: 0, r: 0, n: 0, b: 0, q: 0, k: 0 },
-    b: { p: 0, r: 0, n: 0, b: 0, q: 0, k: 0 },
-  };
-
-  // Count current pieces on board
-  getAllSquares().forEach(function (square) {
-    var piece = chess.get(square);
-    if (piece) {
-      currentPieces[piece.color][piece.type]++;
-    }
-  });
-
-  // Add captured pieces to jails
   ["w", "b"].forEach(function (color) {
-    Object.keys(startingPieces[color]).forEach(function (pieceType) {
-      var captured = startingPieces[color][pieceType] - currentPieces[color][pieceType];
-      var jailId = color === "w" ? "w-jail" : "b-jail";
-      for (var i = 0; i < captured; i++) {
-        createPiece(color, pieceType, jailId);
-      }
+    var jailId = color === "w" ? "w-jail" : "b-jail";
+    captureHistory[color].forEach(function (pieceType) {
+      createPiece(color, pieceType, jailId);
     });
   });
 }
@@ -482,13 +466,15 @@ function updateCaptured() {
 function undoMove() {
   if (document.getElementById("undo").classList.contains("disabled")) return;
 
-  if (botEnabled) {
-    // Undo two moves when playing against bot
-    if (chess.history().length > 0) chess.undo();
-    if (chess.history().length > 0) chess.undo();
-  } else {
-    chess.undo();
+  var times = botEnabled ? 2 : 1;
+  for (var i = 0; i < times; i++) {
+    var move = chess.undo();
+    if (move && move.captured) {
+      var capturedColor = move.color === "w" ? "b" : "w";
+      captureHistory[capturedColor].pop();
+    }
   }
+
   updateBoard();
   updateCaptured();
 }
