@@ -1911,3 +1911,15 @@ tfoot th:last-child {
     background-position: 50% 80%;
   }
 }
+
+/* Make the chessboard appear in 3D */
+#container * {
+  transform-style: preserve-3d !important;
+  will-change: transform;
+}
+
+/* Center the chessboard */
+#table {
+  width: 100%;
+  height: 100%;
+}
