@@ -8,5 +8,5 @@ See it in action : http://codepen.io/juliangarnier/full/BsIih
 
 **Libraries**
 
-* Photon : http://photon.attasi.com
+* three.js : https://github.com/mrdoob/three.js
 * Chess.js : https://github.com/jhlywa/chess.js

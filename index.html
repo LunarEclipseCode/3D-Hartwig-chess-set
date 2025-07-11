@@ -9,7 +9,6 @@
     <title>3D Hartwig chess set in HTML/CSS/JS</title>
     <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
     <link rel="stylesheet" type="text/css" media="screen" href="css/styles.css">
-    <script src="js/prefixfree.min.js"></script>
   </head>
   <body>
     <div id="app" class="loading" data-theme="classic" data-frame="off" data-menu="main">
@@ -49,8 +48,10 @@
             <p>Licensed under the MIT license.</p>
             <p>Fork me on <a href="https://github.com/juliangarnier/3D-Artwig-chess-set" target="_blanc">Github<a></p>
             <h2>Libraries</h2>
-            <p>Lighting effect : <a href="http://photon.attasi.com" target="_blank">Photon</a><br>
-              Moves and validation : <a href="https://github.com/jhlywa/chess.js" target="_blank">Chess.js</a></p>
+            <p>
+              Lighting effect : <a href="https://github.com/mrdoob/three.js" target="_blank">three.js</a><br />
+              Moves and validation : <a href="https://github.com/jhlywa/chess.js" target="_blank">chess.js</a>
+            </p>
             <button type="button" class="btn menu-nav" data-menu="main">Back</button>
           </section>
         </div>
@@ -332,6 +333,8 @@
         <div id="promotion"></div>
       </div>
     </div>
-    <script src="js/scripts.min.js"></script>
+    <script src="js/chess.js"></script>
+    <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+    <script src="js/app.js"></script>
   </body>
 </html>

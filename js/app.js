@@ -344,20 +344,108 @@ function updateSphere(sphere,sceneXAngle,sceneZAngle) {
   sphere.style.WebkitTransform = "rotateZ( " + ( - sceneZAngle ) + "deg ) rotateX( " + ( - sceneXAngle ) + "deg )";
 }
 
+class ThreeJsLighting {
+  constructor(x, y, z) {
+    this.lightPosition = new THREE.Vector3(x, y, z);
+    this.lightVector = this.lightPosition.clone().normalize();
+  }
+
+  calcFaceLighting(faceElement, maxShade, maxTint, isBackfaced) {
+    const transform = window.getComputedStyle(faceElement).transform;
+    const rotations = this.getRotationsFromTransform(transform);
+    const faceVector = this.getRotationVector(rotations);
+
+    const angleRadians = this.lightVector.angleTo(faceVector);
+    const angleDegrees = angleRadians * (180 / Math.PI);
+
+    let normalizedAngle = isBackfaced ? angleDegrees / 180 : angleDegrees / 90;
+
+    if (isBackfaced && normalizedAngle > 0.5) {
+      normalizedAngle = 1 - normalizedAngle;
+    }
+
+    const totalRange = Math.abs(maxShade + maxTint);
+    const lightIntensity = totalRange * normalizedAngle;
+
+    if (lightIntensity <= maxTint) {
+      return "transparent";
+    } else {
+      return `rgba(0, 0, 0, ${Math.abs(lightIntensity - maxTint)})`;
+    }
+  }
+
+  getRotationsFromTransform(transform) {
+    const defaultMatrix = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)";
+    const matrixString = transform === "none" ? defaultMatrix : transform;
+
+    const values = matrixString.match(/matrix3d\(([^)]+)\)/);
+    if (!values) return { x: 0, y: 0, z: 0 };
+
+    const m = values[1].split(",").map((n) => parseFloat(n.trim()));
+
+    const matrix = new THREE.Matrix4().set(m[0], m[4], m[8], m[12], m[1], m[5], m[9], m[13], m[2], m[6], m[10], m[14], m[3], m[7], m[11], m[15]);
+
+    const position = new THREE.Vector3();
+    const quaternion = new THREE.Quaternion();
+    const scale = new THREE.Vector3();
+
+    matrix.decompose(position, quaternion, scale);
+
+    const euler = new THREE.Euler().setFromQuaternion(quaternion, "XYZ");
+
+    return {
+      x: euler.x,
+      y: euler.y,
+      z: euler.z,
+    };
+  }
+
+  getRotationVector(rotations) {
+    let vector = new THREE.Vector3(0, 0, 1);
+
+    const matrixX = new THREE.Matrix4().makeRotationX(rotations.x);
+    const matrixY = new THREE.Matrix4().makeRotationY(rotations.y);
+    const matrixZ = new THREE.Matrix4().makeRotationZ(rotations.z);
+
+    vector.applyMatrix4(matrixX);
+    vector.applyMatrix4(matrixY);
+    vector.applyMatrix4(matrixZ);
+
+    return vector.normalize();
+  }
+
+  setPosition(x, y, z) {
+    this.lightPosition.set(x, y, z);
+    this.lightVector = this.lightPosition.clone().normalize();
+  }
+}
+
 function renderPoly() {
-  var light = new Photon.Light( x = 50, y = 150, z = 250);
-  var shadeAmount = 1;
-  var tintAmount = 1;
-  var pieces = new Photon.FaceGroup($("#container")[0], $("#container .face"), 1.6, .48, true);
-  pieces.render(light, true);
+  const lighting = new ThreeJsLighting(50, 150, 250);
+
+  const faces = document.querySelectorAll("#container .face");
+
+  faces.forEach((face) => {
+    let shaderElement = face.querySelector(".threejs-shader");
+    if (!shaderElement) {
+      shaderElement = document.createElement("div");
+      shaderElement.className = "threejs-shader";
+      shaderElement.style.width = "100%";
+      shaderElement.style.height = "100%";
+      face.insertBefore(shaderElement, face.firstChild);
+    }
+
+    const bgColor = lighting.calcFaceLighting(face, 1.7, 0.425, true);
+    shaderElement.style.background = bgColor;
+  });
 }
 
 function resetPoly() {
-  for(var i = 0; i < photon.length; i++) {
-    photon[i].setAttribute("style","");
-  }
-  if(timeOut != null) clearTimeout(timeOut);
-  timeOut = setTimeout(renderPoly, 250);
+  if (timeOut != null) clearTimeout(timeOut);
+  
+  timeOut = setTimeout(() => {
+    requestAnimationFrame(renderPoly);
+  }, 16);
 }
 
 function Continue() {
