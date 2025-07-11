@@ -17,7 +17,7 @@ pre,
 a,
 abbr,
 acronym,
-adsetess,
+address,
 big,
 cite,
 code,
@@ -32,7 +32,7 @@ s,
 samp,
 small,
 strike,
-swireframeg,
+strong,
 sub,
 sup,
 tt,
@@ -51,14 +51,6 @@ fieldset,
 form,
 label,
 legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
 article,
 aside,
 canvas,
@@ -115,10 +107,6 @@ blockquote:after,
 q:before,
 q:after {
   content: none;
-}
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
 }
 
 @import url(http://fonts.googleapis.com/css?family=Lato:400,900);
@@ -188,6 +176,11 @@ body:not(.animated) *:not(#panes) {
   transform-style: preserve-3d;
 }
 
+/* Position adjustment after switching to css grid */
+#app[data-frame="on"] #board {
+  transform: translateX(-0.25em) translateY(-0.26em) translateZ(0.32em);
+}
+
 #container {
   z-index: 1;
   perspective: 800px;
@@ -254,24 +247,20 @@ body:not(.animated) *:not(#panes) {
 }
 
 #app[data-frame="on"] #board:after {
-  transform: rotateX(90deg) translateZ(8.75em) translateY(-0.3em);
+  transform: rotateX(90deg) translateZ(-0.26em) translateY(-0.3em) translateX(0.26em);
   transform-origin: 0 0;
 }
 #app[data-frame="on"] #frame:after {
-  transform: rotateX(90deg) rotateY(90deg) translateX(9.5em) translateY(-0.02em);
+  transform: rotateX(90deg) rotateY(90deg) translateX(9.5em) translateY(0em);
   transform-origin: 100% 0;
 }
 #app[data-frame="on"] #frame:before {
-  transform: rotateX(90deg) rotateY(0deg) translateX(0em) translateY(-0.02em);
+  transform: rotateX(90deg) rotateY(0deg) translateX(0em) translateY(0em);
   transform-origin: 100% 0;
 }
 
-#app[data-frame="off"] th {
-  display: none;
-}
-
 #app[data-frame="off"] #board:after {
-  transform: rotateX(90deg) translateZ(8em) translateY(-0.3em);
+  transform: rotateX(90deg) translateZ(0em) translateY(-0.3em);
   transform-origin: 0 0;
 }
 #app[data-frame="off"] #frame:after {
@@ -281,47 +270,6 @@ body:not(.animated) *:not(#panes) {
 #app[data-frame="off"] #frame:before {
   transform: rotateX(90deg) rotateY(0deg) translateX(0em) translateY(-0.02em);
   transform-origin: 100% 0;
-}
-
-th,
-td {
-  position: relative;
-  width: 1em;
-  height: 1em;
-}
-
-th {
-  vertical-align: top;
-  font-size: 75%;
-  line-height: 0.5em;
-}
-
-tbody th {
-  vertical-align: top;
-  line-height: 0.9em;
-}
-
-table span {
-  display: block;
-  height: 100%;
-  font-size: 0.26em;
-  color: rgba(255, 255, 255, 0.75);
-  transform: translateZ(1px);
-}
-
-thead span,
-tbody th:last-child span {
-  transform: rotateZ(180deg) translateZ(1px);
-  transform-origin: center;
-}
-
-thead span,
-tfoot span {
-  line-height: 3.9em;
-}
-tbody span {
-  line-height: 4.5em;
-  padding-right: 0.3em;
 }
 
 /* ---------------------------------------------------------------------------------------------------- jail */
@@ -506,8 +454,6 @@ tbody span {
   left: 50%;
   border-radius: 50%;
   transform-style: preserve-3d;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
   box-sizing: border-box;
   transform: translateZ(1px);
 }
@@ -877,7 +823,6 @@ tbody span {
   margin: -0.5em 0 0 -0.5em;
   background: rgba(0, 0, 0, 0.6);
   border-radius: 50%;
-  transform: rotateX(-35.3deg) rotateY(0deg);
   box-shadow: 0 0 1em 2em rgba(0, 0, 0, 0.6);
 }
 
@@ -961,13 +906,16 @@ h2 {
   margin: 0 0 0 -12em;
   transition-delay: 0;
   transition: all 1.5s ease-in-out;
-  transform: translateY(-24em) translateZ(99999px);
+  transform: translateY(-24em);
+  z-index: 100;
+  transform-style: preserve-3d;
 }
 
 #app[data-state="menu"] #menu {
   opacity: 1;
   transition-delay: 1.5s;
-  transform: translateY(0em) translateZ(99999px);
+  transform: translateY(0em);
+  z-index: 100;
 }
 
 #logoimg {
@@ -1133,7 +1081,7 @@ h2 {
 
 .symbol:nth-child(3) > div:first-child:after {
   top: -1.5em;
-  -webkit-transform: rotateZ(-45deg);
+  transform: rotateZ(-45deg);
 }
 
 .symbol:nth-child(4) > div:first-child:before {
@@ -1430,41 +1378,6 @@ input[type="checkbox"]:hover + label:after {
   line-height: 1.5em;
 }
 
-/* ---------------------------------------------------------------------------------------------------- borders textures */
-
-thead th:first-child {
-  background-position: left top;
-  background-size: 332% auto;
-}
-thead th {
-  background-position: center top;
-  background-size: 250% auto;
-}
-thead th:last-child {
-  background-position: right top;
-  background-size: 332% auto;
-}
-tbody th:first-child {
-  background-position: left center;
-  background-size: auto 250%;
-}
-tbody th:last-child {
-  background-position: right center;
-  background-size: auto 250%;
-}
-tfoot th:first-child {
-  background-position: left bottom;
-  background-size: 332% auto;
-}
-tfoot th {
-  background-position: center bottom;
-  background-size: 250% auto;
-}
-tfoot th:last-child {
-  background-position: right bottom;
-  background-size: 332% auto;
-}
-
 .square,
 .sphere,
 #board:after,
@@ -1503,10 +1416,6 @@ tfoot th:last-child {
 #app[data-theme="classic"] .square {
   background-color: #212121;
 }
-#app[data-theme="classic"] tbody tr:nth-child(odd) .square:nth-child(even),
-#app[data-theme="classic"] tbody tr:nth-child(even) .square:nth-child(odd) {
-  background-color: #cf9269;
-}
 #app[data-theme="classic"] .black .poly > div,
 #app[data-theme="classic"] .black .poly .sphere {
   background-color: #303030;
@@ -1515,28 +1424,33 @@ tfoot th:last-child {
 #app[data-theme="classic"] .white .poly .sphere {
   background-color: #c19666;
 }
-#app[data-theme="classic"] .white.bishop .rectangle.a .tp:before,
+#app[data-theme="classic"] .white.bishop .rectangle.a .tp:before {
+  border-bottom: 1.1em solid #f6c182;
+}
 #app[data-theme="classic"] .white.bishop .rectangle.b .tp:before {
-  border-bottom: 1.1em solid #f2bd7d;
+  border-bottom: 1.1em solid #f7c384;
 }
-#app[data-theme="classic"] .white.bishop .rectangle.a .tp:after,
+#app[data-theme="classic"] .white.bishop .rectangle.a .tp:after {
+  border-top: 1.1em solid #fdca8a;
+}
 #app[data-theme="classic"] .white.bishop .rectangle.b.prim .tp:after {
-  border-top: 1.1em solid #f2bd7d;
+  border-top: 1.1em solid #f9c485;
 }
-#app[data-theme="classic"] .black.bishop .rectangle.a .tp:before,
+#app[data-theme="classic"] .black.bishop .rectangle.a .tp:before {
+  border-bottom: 1.1em solid #2f2f2f;
+}
 #app[data-theme="classic"] .black.bishop .rectangle.b .tp:before {
-  border-bottom: 1.1em solid #434343;
+  border-bottom: 1.1em solid #303030;
 }
-#app[data-theme="classic"] .black.bishop .rectangle.a .tp:after,
+#app[data-theme="classic"] .black.bishop .rectangle.a .tp:after {
+  border-top: 1.1em solid #313131;
+}
 #app[data-theme="classic"] .black.bishop .rectangle.b.prim .tp:after {
-  border-top: 1.1em solid #434343;
+  border-top: 1.1em solid #2f2f2f;
 }
 
 /* ---------------------------------------------------------------------------------------------------- classic textures */
 
-#app[data-theme="classic"] th {
-  background-image: url(../img/classic-frame.png);
-}
 #app[data-theme="classic"][data-frame="off"] #board:after,
 #app[data-theme="classic"][data-frame="off"] #frame:after,
 #app[data-theme="classic"][data-frame="off"] #frame:before {
@@ -1566,16 +1480,8 @@ tfoot th:last-child {
   background-image: url(../img/classic-sphere-black.png);
 }
 
-#app[data-theme="classic"] tbody tr:nth-child(odd) .square:nth-child(even),
-#app[data-theme="classic"] tbody tr:nth-child(even) .square:nth-child(odd) {
-  background-image: url(../img/classic-square-white.png);
-}
-
 /* ---------------------------------------------------------------------------------------------------- marble */
 
-#app[data-theme="marble"] th {
-  background-color: #303030;
-}
 #app[data-theme="marble"][data-frame="off"] #frame,
 #app[data-theme="marble"][data-frame="off"] #board:after,
 #app[data-theme="marble"][data-frame="off"] #frame:after,
@@ -1591,10 +1497,6 @@ tfoot th:last-child {
 #app[data-theme="marble"] .square {
   background-color: #404040;
 }
-#app[data-theme="marble"] tbody tr:nth-child(odd) .square:nth-child(even),
-#app[data-theme="marble"] tbody tr:nth-child(even) .square:nth-child(odd) {
-  background-color: #fff;
-}
 #app[data-theme="marble"] .black .poly > div,
 #app[data-theme="marble"] .black .poly .sphere {
   background-color: #404040;
@@ -1603,21 +1505,29 @@ tfoot th:last-child {
 #app[data-theme="marble"] .white .poly .sphere {
   background-color: #fff;
 }
-#app[data-theme="marble"] .white.bishop .rectangle.a .tp:before,
+#app[data-theme="marble"] .white.bishop .rectangle.a .tp:before {
+  border-bottom: 1.1em solid #efe8e4;
+}
 #app[data-theme="marble"] .white.bishop .rectangle.b .tp:before {
-  border-bottom: 1.1em solid #eae5e0;
+  border-bottom: 1.1em solid #efebe6;
 }
-#app[data-theme="marble"] .white.bishop .rectangle.a .tp:after,
+#app[data-theme="marble"] .white.bishop .rectangle.a .tp:after {
+  border-top: 1.1em solid #dfdbd5;
+}
 #app[data-theme="marble"] .white.bishop .rectangle.b.prim .tp:after {
-  border-top: 1.1em solid #eae5e0;
+  border-top: 1.1em solid #eee9e5;
 }
-#app[data-theme="marble"] .black.bishop .rectangle.a .tp:before,
+#app[data-theme="marble"] .black.bishop .rectangle.a .tp:before {
+  border-bottom: 1.1em solid #4a4845;
+}
 #app[data-theme="marble"] .black.bishop .rectangle.b .tp:before {
-  border-bottom: 1.1em solid #565453;
+  border-bottom: 1.1em solid #4a4744;
 }
-#app[data-theme="marble"] .black.bishop .rectangle.a .tp:after,
+#app[data-theme="marble"] .black.bishop .rectangle.a .tp:after {
+  border-top: 1.1em solid #413f3b;
+}
 #app[data-theme="marble"] .black.bishop .rectangle.b.prim .tp:after {
-  border-top: 1.1em solid #565453;
+  border-top: 1.1em solid #4a4744;
 }
 
 /* ---------------------------------------------------------------------------------------------------- marble textures */
@@ -1625,9 +1535,6 @@ tfoot th:last-child {
 #app[data-theme="marble"] #scene {
   background: url(../img/back.jpg) no-repeat center center black;
   background-size: cover;
-}
-#app[data-theme="marble"] th {
-  background-image: url(../img/marble-frame.png);
 }
 #app[data-theme="marble"][data-frame="off"] #board:after,
 #app[data-theme="marble"][data-frame="off"] #frame:after,
@@ -1657,10 +1564,6 @@ tfoot th:last-child {
 #app[data-theme="marble"] .black .poly .sphere {
   background-image: url(../img/marble-sphere-black.png);
 }
-#app[data-theme="marble"] tbody tr:nth-child(odd) .square:nth-child(even),
-#app[data-theme="marble"] tbody tr:nth-child(even) .square:nth-child(odd) {
-  background-image: url(../img/marble-square-white.png);
-}
 
 /* ---------------------------------------------------------------------------------------------------- flat */
 
@@ -1686,16 +1589,6 @@ tfoot th:last-child {
 #app[data-theme="flat"] .square {
   background-color: #c6c5c3;
 }
-#app[data-theme="flat"] tbody tr:nth-child(odd) .square:nth-child(even),
-#app[data-theme="flat"] tbody tr:nth-child(even) .square:nth-child(odd) {
-  background-color: #e0dfdd;
-}
-#app[data-theme="flat"] table span {
-  color: #525150;
-}
-#app[data-theme="flat"] th {
-  background-color: #e0dfdd;
-}
 #app[data-theme="flat"] .white .poly > div,
 .set-theme[data-theme="flat"] .cube,
 .set-theme[data-theme="flat"] .cube:before,
@@ -1706,10 +1599,10 @@ tfoot th:last-child {
   background-color: #ff432f;
 }
 #app[data-theme="flat"] .white .poly .sphere {
-  background: -webkit-radial-gradient(center, ellipse cover, rgba(0, 162, 255, 1) 30%, rgba(0, 89, 141, 1) 100%) 0em -1em;
+  background: radial-gradient(center, ellipse cover, rgba(0, 162, 255, 1) 30%, rgba(0, 89, 141, 1) 100%) 0em -1em;
 }
 #app[data-theme="flat"] .black .poly .sphere {
-  background: -webkit-radial-gradient(center, ellipse cover, rgba(255, 67, 47, 1) 30%, rgba(141, 36, 25, 1) 100%) 0em -1em;
+  background: radial-gradient(center, ellipse cover, rgba(255, 67, 47, 1) 30%, rgba(141, 36, 25, 1) 100%) 0em -1em;
 }
 #app[data-theme="flat"] .white.bishop .rectangle.a .tp:before,
 #app[data-theme="flat"] .white.bishop .rectangle.b .tp:before {
@@ -1733,9 +1626,6 @@ tfoot th:last-child {
 #app[data-theme="wireframe"] #scene {
   background: radial-gradient(center, ellipse cover, #1d414d 0%, #000000 70%);
 }
-#app[data-theme="wireframe"] th {
-  background-color: rgba(17, 41, 48, 0.6);
-}
 #app[data-theme="wireframe"] #frame {
   background-color: #001b20;
 }
@@ -1749,10 +1639,6 @@ tfoot th:last-child {
 #app[data-theme="wireframe"] .square {
   background-color: rgba(17, 41, 48, 0);
 }
-#app[data-theme="wireframe"] tbody tr:nth-child(odd) .square:nth-child(even),
-#app[data-theme="wireframe"] tbody tr:nth-child(even) .square:nth-child(odd) {
-  background-color: rgba(17, 41, 48, 0.6);
-}
 #app[data-theme="wireframe"] .white .poly > div {
   background-color: #022a36;
   border: 1px solid #35c2d3;
@@ -1762,11 +1648,10 @@ tfoot th:last-child {
 .set-theme[data-theme="wireframe"] .cube,
 .set-theme[data-theme="wireframe"] .cube:before,
 .set-theme[data-theme="wireframe"] .cube:after {
-  background-color: #022a36;
-  border: 0px solid #35c2d3;
-  box-shadow: inset 0 0 0.5em 0.2em #35c2d3;
-  opacity: 0.8;
+  background-color: rgba(2, 42, 54, 0.8);
+  box-shadow: inset 0 0 0.5em 0.2em rgba(53, 194, 211, 0.8);
 }
+
 #app[data-theme="wireframe"] .black .poly > div {
   background-color: #022a36;
   border: 1px solid #ffdd1d;
@@ -1922,4 +1807,313 @@ tfoot th:last-child {
 #table {
   width: 100%;
   height: 100%;
+}
+
+/* Make the logo appear 3D in firefox */
+#logo {
+  transform-style: preserve-3d !important;
+}
+
+/* Switch from table to css grid for proper rendering in firefox */
+#board {
+  display: grid;
+  grid-template-columns: repeat(10, 1em);
+  grid-template-rows: repeat(10, 1em);
+  transform-style: preserve-3d;
+}
+
+.board-label {
+  position: relative;
+  vertical-align: center;
+  font-size: 75%;
+}
+
+.board-label span {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  font-size: 0.26em;
+  color: rgba(255, 255, 255, 0.75);
+  transform: translateZ(1px);
+}
+
+.col-label span {
+  line-height: 3.9em;
+  transform: translateZ(1px);
+}
+
+.row-label {
+  vertical-align: top;
+  line-height: 0.9em;
+}
+
+.row-label span {
+  line-height: 4.5em;
+  padding-right: 0.3em;
+}
+
+/* Top row labels and right column labels should be upside down */
+#board > .board-label:nth-child(n + 2):nth-child(-n + 9) span,
+#board > .board-label:nth-child(10n) span {
+  transform: rotateZ(180deg) translateZ(1px);
+  transform-origin: center;
+}
+
+/* Hide labels when frame is off */
+#app[data-frame="off"] .board-label {
+  display: none;
+}
+
+/* Adjust grid template when frame is off */
+#app[data-frame="off"] #board {
+  grid-template-columns: repeat(8, 1em);
+  grid-template-rows: repeat(8, 1em);
+}
+
+.square {
+  position: relative;
+  width: 1em;
+  height: 1em;
+}
+
+/* Apply background textures to labels based on their position */
+/* Made small adjustments so that neighboring pieces don't show thin line when zooming in/oout */
+/* Top-left corner */
+.board-label:nth-child(1) {
+  background-position: left top;
+  background-size: 337.5% auto;
+  height: 1em;
+  width: 0.9975em;
+  transform: translate(0.345em, 0.35em);
+}
+
+/* Top row */
+.board-label:nth-child(n + 2):nth-child(-n + 9) {
+  background-position: center top;
+  background-size: 250% auto;
+  height: 1em;
+  width: 1.35em;
+  transform: translate(0em, 0.35em);
+}
+
+/* Top-right corner */
+.board-label:nth-child(10) {
+  background-position: right top;
+  background-size: 337.5% auto;
+  height: 1em;
+  width: 1em;
+  transform: translate(0em, 0.35em);
+}
+
+/* Left column */
+.board-label:nth-child(10n + 1):not(:nth-child(1)):not(:nth-child(91)) {
+  background-position: left center;
+  background-size: auto 250%;
+  width: 1em;
+  height: 1.345em;
+  transform: translate(0.345em, 0em);
+}
+
+/* Right column */
+.board-label:nth-child(10n):not(:nth-child(10)):not(:nth-child(100)) {
+  background-position: right center;
+  background-size: auto 250%;
+  width: 1.0075em;
+  height: 1.345em;
+  transform: translate(-0.0075em, 0em);
+}
+
+/* Bottom-left corner */
+.board-label:nth-child(91) {
+  background-position: left bottom;
+  background-size: 334.5% auto;
+  height: 1.005em;
+  width: 1.005em;
+  transform: translate(0.345em, 0em);
+}
+
+/* Bottom row */
+.board-label:nth-child(n + 92):nth-child(-n + 99) {
+  background-position: center bottom;
+  background-size: 250% auto;
+  height: 1.0125em;
+  width: 1.345em;
+  transform: translate(0em, -0.0075em);
+}
+
+/* Bottom-right corner */
+.board-label:nth-child(100) {
+  background-position: right bottom;
+  background-size: 336% auto;
+  height: 1.005em;
+  width: 1em;
+  transform: translate(0em, 0em);
+}
+
+/* Apply theme-specific background images to labels */
+#app[data-theme="classic"] .board-label {
+  background-image: url(../img/classic-frame.png);
+}
+
+#app[data-theme="marble"] .board-label {
+  background-image: url(../img/marble-frame.png);
+}
+
+#app[data-theme="flat"] .board-label {
+  background-color: #e0dfdd;
+}
+
+#app[data-theme="flat"] .board-label span {
+  color: #515150;
+}
+
+#app[data-theme="wireframe"] .board-label {
+  background-color: rgba(17, 41, 48, 0.6);
+}
+
+/* Square-specific coloring for each theme */
+#app[data-theme="classic"] #a2,
+#app[data-theme="classic"] #a4,
+#app[data-theme="classic"] #a6,
+#app[data-theme="classic"] #a8,
+#app[data-theme="classic"] #b1,
+#app[data-theme="classic"] #b3,
+#app[data-theme="classic"] #b5,
+#app[data-theme="classic"] #b7,
+#app[data-theme="classic"] #c2,
+#app[data-theme="classic"] #c4,
+#app[data-theme="classic"] #c6,
+#app[data-theme="classic"] #c8,
+#app[data-theme="classic"] #d1,
+#app[data-theme="classic"] #d3,
+#app[data-theme="classic"] #d5,
+#app[data-theme="classic"] #d7,
+#app[data-theme="classic"] #e2,
+#app[data-theme="classic"] #e4,
+#app[data-theme="classic"] #e6,
+#app[data-theme="classic"] #e8,
+#app[data-theme="classic"] #f1,
+#app[data-theme="classic"] #f3,
+#app[data-theme="classic"] #f5,
+#app[data-theme="classic"] #f7,
+#app[data-theme="classic"] #g2,
+#app[data-theme="classic"] #g4,
+#app[data-theme="classic"] #g6,
+#app[data-theme="classic"] #g8,
+#app[data-theme="classic"] #h1,
+#app[data-theme="classic"] #h3,
+#app[data-theme="classic"] #h5,
+#app[data-theme="classic"] #h7 {
+  background-color: #cf9269;
+  background-image: url(../img/classic-square-white.png);
+}
+
+#app[data-theme="marble"] #a2,
+#app[data-theme="marble"] #a4,
+#app[data-theme="marble"] #a6,
+#app[data-theme="marble"] #a8,
+#app[data-theme="marble"] #b1,
+#app[data-theme="marble"] #b3,
+#app[data-theme="marble"] #b5,
+#app[data-theme="marble"] #b7,
+#app[data-theme="marble"] #c2,
+#app[data-theme="marble"] #c4,
+#app[data-theme="marble"] #c6,
+#app[data-theme="marble"] #c8,
+#app[data-theme="marble"] #d1,
+#app[data-theme="marble"] #d3,
+#app[data-theme="marble"] #d5,
+#app[data-theme="marble"] #d7,
+#app[data-theme="marble"] #e2,
+#app[data-theme="marble"] #e4,
+#app[data-theme="marble"] #e6,
+#app[data-theme="marble"] #e8,
+#app[data-theme="marble"] #f1,
+#app[data-theme="marble"] #f3,
+#app[data-theme="marble"] #f5,
+#app[data-theme="marble"] #f7,
+#app[data-theme="marble"] #g2,
+#app[data-theme="marble"] #g4,
+#app[data-theme="marble"] #g6,
+#app[data-theme="marble"] #g8,
+#app[data-theme="marble"] #h1,
+#app[data-theme="marble"] #h3,
+#app[data-theme="marble"] #h5,
+#app[data-theme="marble"] #h7 {
+  background-color: #fff;
+  background-image: url(../img/marble-square-white.png);
+}
+
+#app[data-theme="flat"] #a2,
+#app[data-theme="flat"] #a4,
+#app[data-theme="flat"] #a6,
+#app[data-theme="flat"] #a8,
+#app[data-theme="flat"] #b1,
+#app[data-theme="flat"] #b3,
+#app[data-theme="flat"] #b5,
+#app[data-theme="flat"] #b7,
+#app[data-theme="flat"] #c2,
+#app[data-theme="flat"] #c4,
+#app[data-theme="flat"] #c6,
+#app[data-theme="flat"] #c8,
+#app[data-theme="flat"] #d1,
+#app[data-theme="flat"] #d3,
+#app[data-theme="flat"] #d5,
+#app[data-theme="flat"] #d7,
+#app[data-theme="flat"] #e2,
+#app[data-theme="flat"] #e4,
+#app[data-theme="flat"] #e6,
+#app[data-theme="flat"] #e8,
+#app[data-theme="flat"] #f1,
+#app[data-theme="flat"] #f3,
+#app[data-theme="flat"] #f5,
+#app[data-theme="flat"] #f7,
+#app[data-theme="flat"] #g2,
+#app[data-theme="flat"] #g4,
+#app[data-theme="flat"] #g6,
+#app[data-theme="flat"] #g8,
+#app[data-theme="flat"] #h1,
+#app[data-theme="flat"] #h3,
+#app[data-theme="flat"] #h5,
+#app[data-theme="flat"] #h7 {
+  background-color: #e0dfdd;
+}
+
+#app[data-theme="wireframe"] #a2,
+#app[data-theme="wireframe"] #a4,
+#app[data-theme="wireframe"] #a6,
+#app[data-theme="wireframe"] #a8,
+#app[data-theme="wireframe"] #b1,
+#app[data-theme="wireframe"] #b3,
+#app[data-theme="wireframe"] #b5,
+#app[data-theme="wireframe"] #b7,
+#app[data-theme="wireframe"] #c2,
+#app[data-theme="wireframe"] #c4,
+#app[data-theme="wireframe"] #c6,
+#app[data-theme="wireframe"] #c8,
+#app[data-theme="wireframe"] #d1,
+#app[data-theme="wireframe"] #d3,
+#app[data-theme="wireframe"] #d5,
+#app[data-theme="wireframe"] #d7,
+#app[data-theme="wireframe"] #e2,
+#app[data-theme="wireframe"] #e4,
+#app[data-theme="wireframe"] #e6,
+#app[data-theme="wireframe"] #e8,
+#app[data-theme="wireframe"] #f1,
+#app[data-theme="wireframe"] #f3,
+#app[data-theme="wireframe"] #f5,
+#app[data-theme="wireframe"] #f7,
+#app[data-theme="wireframe"] #g2,
+#app[data-theme="wireframe"] #g4,
+#app[data-theme="wireframe"] #g6,
+#app[data-theme="wireframe"] #g8,
+#app[data-theme="wireframe"] #h1,
+#app[data-theme="wireframe"] #h3,
+#app[data-theme="wireframe"] #h5,
+#app[data-theme="wireframe"] #h7 {
+  background-color: rgba(17, 41, 48, 0.6);
+}
+
+#app[data-frame="on"] #board {
+  transform: translateX(-0.25em) translateY(-0.26em) translateZ(0.32em);
 }
