@@ -316,11 +316,6 @@ body:not(.animated) *:not(#panes) {
   float: left;
 }
 
-.jail .piece .face,
-.jail .piece .sphere {
-  box-shadow: inset 10em 10em 1em rgba(0, 0, 0, 0.3);
-}
-
 #b-jail .piece {
   transform-origin: center;
   transform: rotateZ(180deg);
@@ -1116,7 +1111,7 @@ h2 {
   transform: translateX(80em);
 }
 
-#app[data-menu="themes"] #panes {
+#app[data-menu="settings"] #panes {
   transform: translateX(80em);
 }
 #app[data-menu="main"] #panes {
@@ -1127,7 +1122,7 @@ h2 {
 }
 
 #app[data-menu="main"] #main,
-#app[data-menu="themes"] #themes,
+#app[data-menu="settings"] #settings,
 #app[data-menu="about"] #about {
   opacity: 1;
 }
@@ -1156,7 +1151,7 @@ h2 {
   border: none;
   color: white;
   font-size: 1em;
-  line-height: 1.75em;
+  line-height: 2em;
   text-align: center;
   vertical-align: middle;
   text-decoration: none;
@@ -1183,8 +1178,8 @@ h2 {
 }
 
 #menu .btn {
-  width: 6em;
-  margin: 1em 0em;
+  width: 7.25em;
+  margin: 1em 0.15em;
 }
 
 #top-bar .btn {
@@ -1236,7 +1231,7 @@ h2 {
   background-size: 40px 16px;
 }
 
-#themes .btn {
+#settings .btn {
   width: 8em;
 }
 
@@ -1474,10 +1469,10 @@ input[type="checkbox"]:hover + label:after {
   background-image: url(../img/classic-piece-black.png);
 }
 #app[data-theme="classic"] .white .poly .sphere {
-  background-image: url(../img/classic-sphere-white.png);
+  background-image: url(../img/classic-piece-white.png);
 }
 #app[data-theme="classic"] .black .poly .sphere {
-  background-image: url(../img/classic-sphere-black.png);
+  background-image: url(../img/classic-piece-black.png);
 }
 
 /* ---------------------------------------------------------------------------------------------------- marble */
@@ -1559,10 +1554,10 @@ input[type="checkbox"]:hover + label:after {
   background-image: url(../img/marble-piece-black.png);
 }
 #app[data-theme="marble"] .white .poly .sphere {
-  background-image: url(../img/marble-sphere-white.png);
+  background-image: url(../img/marble-piece-white.png);
 }
 #app[data-theme="marble"] .black .poly .sphere {
-  background-image: url(../img/marble-sphere-black.png);
+  background-image: url(../img/marble-piece-black.png);
 }
 
 /* ---------------------------------------------------------------------------------------------------- flat */
@@ -1798,9 +1793,9 @@ input[type="checkbox"]:hover + label:after {
 }
 
 /* Make the chessboard appear in 3D */
-#container * {
+#container > #scene > #table > #board *,
+#container > #scene > #table {
   transform-style: preserve-3d !important;
-  will-change: transform;
 }
 
 /* Center the chessboard */
@@ -1874,6 +1869,11 @@ input[type="checkbox"]:hover + label:after {
   position: relative;
   width: 1em;
   height: 1em;
+}
+
+#container * {
+  transform-style: preserve-3d !important;
+  will-change: transform;
 }
 
 /* Apply background textures to labels based on their position */
@@ -2116,4 +2116,125 @@ input[type="checkbox"]:hover + label:after {
 
 #app[data-frame="on"] #board {
   transform: translateX(-0.25em) translateY(-0.26em) translateZ(0.32em);
+}
+
+#settings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#settings .switch {
+  display: flex;
+  padding-left: 1em;
+  width: auto;
+  margin: 0.5em auto;
+}
+
+#settings .switch[for="frame-switch"] {
+  margin-top: 1.5em;
+}
+
+#settings .switch::after {
+  margin-left: 1em;
+}
+
+#settings .switch[for="player-side-switch"] {
+  margin-top: 0.5em;
+}
+
+#settings .switch[for="bot-switch"] {
+  margin-top: 0.5em;
+}
+
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: auto;
+}
+
+.dialog-box {
+  background-color: #242424;
+  color: white;
+  padding: 1.5em;
+  border-radius: 0.5em;
+  text-align: center;
+  position: relative;
+  min-width: 20em;
+  max-width: 90%;
+  pointer-events: auto;
+}
+
+.dialog-box h2 {
+  margin-top: 0.25em;
+  margin-bottom: 1em;
+  font-size: 1.2em;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.dialog-box p {
+  margin: 0 0 1.25em 0;
+  line-height: 1.4em;
+  font-size: 1.1em;
+}
+
+.dialog-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}
+
+.dialog-buttons .btn {
+  min-width: 4em;
+}
+
+.dialog-box .no-btn {
+  background-color: #363636;
+}
+
+.dialog-box .no-btn:hover {
+  background-color: #5a5a5a;
+}
+
+.dialog-box .game-end-option {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.btn.disabled,
+.btn.icon.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.btn.icon.disabled:hover {
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.continue-button-group {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 0.15em;
+}
+
+.continue-button-group #continue {
+  display: block;
+  width: 7.25em;
+  margin-bottom: 0.2em;
+}
+
+.continue-button-group #restart {
+  display: block;
+  width: 7.25em;
+  margin: 0.5em 0 0.5em 0;
 }

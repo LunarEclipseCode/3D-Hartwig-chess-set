@@ -58,7 +58,7 @@
       <div id="menu" class="main">
         <img id="logoimg" src="img/logo.png" alt="hartwig chess set" />
         <section id="panes">
-          <section id="themes" class="pane">
+          <section id="settings" class="pane">
             <div id="themes-box">
               <div class="set-theme" data-theme="classic"><div class="cube"></div></div>
               <div class="set-theme" data-theme="marble"><div class="cube"></div></div>
@@ -67,25 +67,35 @@
             </div>
             <input type="checkbox" id="frame-switch" onchange="toggleFrame(this)" />
             <label for="frame-switch" class="btn white switch">Border</label>
+            <input type="checkbox" id="rotation-switch" onchange="toggleRotation(this)" checked />
+            <label for="rotation-switch" class="btn white switch">Auto Rotate</label>
+            <input type="checkbox" id="player-side-switch" onchange="togglePlayerSide(this)" />
+            <label for="player-side-switch" class="btn white switch">Play as Black</label>
+            <input type="checkbox" id="bot-switch" onchange="toggleBot(this)" />
+            <label for="bot-switch" class="btn white switch">Play vs Bot</label>
             <button type="button" class="btn menu-nav" data-menu="main">Back</button>
           </section>
           <section id="main" class="pane">
             <h1>3D Hartwig chess set</h1>
-            <p>done in HTML/CSS/JS by <a href="http://twitter.com/juliangarnier" target="_blank">@JulianGarnier</a></p>
-            <button type="button" class="btn white menu-nav" data-menu="themes">Themes</button>
-            <button type="button" id="continue" class="btn">Play</button>
+            <p style="margin-bottom: 0.5em">Original design and code by <a href="http://twitter.com/juliangarnier" target="_blank">@JulianGarnier</a></p>
+            <p style="margin-bottom: 0.5em">Improved by <a href="https://github.com/LunarEclipseCode" target="_blank">@LunarEclipseCode</a></p>
+            <button type="button" class="btn white menu-nav" data-menu="settings">Settings</button>
+            <div class="continue-button-group">
+              <button type="button" id="continue" class="btn">Play</button>
+              <button type="button" id="restart" class="btn white" style="display: none">Restart</button>
+            </div>
             <button type="button" class="btn white menu-nav" data-menu="about">About</button>
           </section>
           <section id="about" class="pane">
             <h1>About</h1>
-            <p>Design and code by <a href="http://twitter.com/juliangarnier" target="_blank">@JulianGarnier</a></p>
-            <p>Works only in webkit.</p>
-            <p>Licensed under the MIT license.</p>
-            <p>Fork me on <a href="https://github.com/juliangarnier/3D-Artwig-chess-set" target="_blank">Github</a></p>
+            <p>Originally released under MIT license</p>
+            <p>This version is provided under GPL (due to stockfish)</p>
+            <p>Fork me on <a href="https://github.com/LunarEclipseCode" target="_blank">Github</a></p>
             <h2>Libraries</h2>
             <p>
               Lighting effect : <a href="https://github.com/mrdoob/three.js" target="_blank">three.js</a><br />
-              Moves and validation : <a href="https://github.com/jhlywa/chess.js" target="_blank">chess.js</a>
+              Moves and validation : <a href="https://github.com/jhlywa/chess.js" target="_blank">chess.js</a><br />
+              Chess Bot : <a href="https://github.com/nmrugg/stockfish.js" target="_blank">stockfish.js</a>
             </p>
             <button type="button" class="btn menu-nav" data-menu="main">Back</button>
           </section>
@@ -360,8 +370,29 @@
         <div id="promotion"></div>
       </div>
     </div>
-    <script src="https://unpkg.com/chess.js@1.4.0/dist/cjs/chess.js"></script>
-    <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+    <div id="side-switch-dialog" class="dialog-overlay" style="display: none">
+      <div class="dialog-box">
+        <h2 id="dialog-title">Cannot switch sides during match</h2>
+        <p>Do you want to start a new game?</p>
+        <div class="dialog-buttons">
+          <button class="btn no-btn" onclick="closeSideSwitchDialog()">No</button>
+          <button class="btn white" onclick="startNewGame()">Yes</button>
+        </div>
+      </div>
+    </div>
+    <div id="game-end-dialog" class="dialog-overlay" style="display: none">
+      <div class="dialog-box">
+        <h2 id="game-result-title">Game Over</h2>
+        <p id="game-result-message">The game has ended.</p>
+        <div class="dialog-buttons">
+          <button class="btn game-end-option" onclick="backToHome()">Back to Home</button>
+          <button class="btn white game-end-option" onclick="startNewGameFromDialog()">Start New Game</button>
+        </div>
+      </div>
+    </div>
+    <script src="https://unpkg.com/chess.js@1.4.0/dist/cjs/chess.js" onerror="this.src='js/chess.js'"></script>
+    <script src="https://unpkg.com/stockfish@8.0.0/src/stockfish.js" onerror="this.src='js/stockfish.js'"></script>
+    <script src="https://unpkg.com/three@0.160.0/build/three.min.js" onerror="this.src='js/three.min.js'"></script>
     <script src="js/app.js"></script>
   </body>
 </html>
