@@ -100,6 +100,14 @@ function isGameInProgress() {
   return gameStarted && chess.history().length > 0 && !chess.isGameOver();
 }
 
+function getTouchPosition(event) {
+  var touch = event.touches ? event.touches[0] || event.changedTouches[0] : event;
+  return {
+    x: touch.pageX || touch.clientX,
+    y: touch.pageY || touch.clientY,
+  };
+}
+
 // Bot functionality
 function initStockfish() {
   stockfish = new STOCKFISH();
@@ -240,8 +248,10 @@ function grabPiece(event) {
     mouseDown = true;
     grabbed = this;
     grabbedID = grabbed.id.substr(-2);
-    startX = event.pageX - document.body.offsetWidth / 2;
-    startY = event.pageY - document.body.offsetHeight / 2;
+
+    var touchPos = getTouchPosition(event);
+    startX = touchPos.x - document.body.offsetWidth / 2;
+    startY = touchPos.y - document.body.offsetHeight / 2;
 
     var style = window.getComputedStyle(grabbed);
     var matrix = style.getPropertyValue("transform");
@@ -259,8 +269,10 @@ function grabPiece(event) {
 function dragPiece(event) {
   if (mouseDown && controls && !waitingForBotMove) {
     event.preventDefault();
-    var moveX = event.pageX - document.body.offsetWidth / 2;
-    var moveY = event.pageY - document.body.offsetHeight / 2;
+
+    var touchPos = getTouchPosition(event);
+    var moveX = touchPos.x - document.body.offsetWidth / 2;
+    var moveY = touchPos.y - document.body.offsetHeight / 2;
     var distX = moveX - startX;
     var distY = moveY - startY;
 
@@ -304,8 +316,9 @@ function dropPiece(event) {
 
 function moveScene(event) {
   if (animated) {
-    eventStartX = event.pageX - document.body.offsetWidth / 2;
-    eventStartY = event.pageY - document.body.offsetHeight / 2;
+    var touchPos = getTouchPosition(event);
+    eventStartX = touchPos.x - document.body.offsetWidth / 2;
+    eventStartY = touchPos.y - document.body.offsetHeight / 2;
   }
   eventStartX = 0;
   eventStartY = 0;
@@ -313,9 +326,10 @@ function moveScene(event) {
   if (!controls && !animated) {
     document.body.classList.remove("animated");
     event.preventDefault();
-    var eventMoveX = event.pageX - document.body.offsetWidth / 2;
+    var touchPos = getTouchPosition(event);
+    var eventMoveX = touchPos.x - document.body.offsetWidth / 2;
+    var eventMoveY = touchPos.y - document.body.offsetHeight / 2;
     var eventDistX = eventMoveX - eventStartX;
-    var eventMoveY = event.pageY - document.body.offsetHeight / 2;
     var eventDistY = eventMoveY - eventStartY;
     var eventX = sceneY - eventDistX * -0.03;
     var eventY = sceneX - eventDistY * -0.03;
@@ -488,6 +502,7 @@ function highLight(element, squares) {
   var elementPos = getWinPos(element);
   var smallestDistance = null;
   var newClosestElement = null;
+  var distanceLimit = isTouch ? 25 : 50;
 
   // Find closest valid square
   for (var i = 0; i < squares.length; i++) {
@@ -510,7 +525,7 @@ function highLight(element, squares) {
   }
 
   // Add highlight if within range
-  if (newClosestElement && smallestDistance < 65) {
+  if (newClosestElement && smallestDistance < distanceLimit) {
     newClosestElement.classList.add("highlight");
     closestElement = newClosestElement;
   } else {

@@ -1,6 +1,6 @@
-# 3D Hartwig Chess Set 
+# 3D Bauhaus/Hartwig Chess Set 
 
-3D chess game done in HTML/CSS/JS.
+3D chess game based on the Bauhaus chess set by Joseph Hartwig (1923)
 
 Original design and code by [juliangarnier](https://github.com/juliangarnier) and improved by [LunarEclipseCode](https://github.com/LunarEclipseCode)
 
@@ -11,6 +11,8 @@ Originally released under MIT License. However, this version is provided under G
 - Migrated from table-based layout to CSS Grid to resolve Firefox compatibility [issue](https://bugzilla.mozilla.org/show_bug.cgi?id=733849)
 
 - Added support to play against bot via Stockfish
+
+- Optimized for touchscreen devices
 
 - Improved User Experience
     - Choose to play as either white or black pieces

@@ -1215,6 +1215,7 @@ h2 {
   color: #808080;
   text-align: center;
   line-height: 3em;
+  pointer-events: none;
 }
 
 .btn.icon {
